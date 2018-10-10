@@ -1,0 +1,22 @@
+query ($repo: String!, $number: Int!) {
+  repository (owner: "CryptoScamDB", name: $repo) {
+    pullRequest(number: $number) {
+      number
+      title
+      author {
+        login
+      }
+      headRef {
+        target {
+          oid
+          repository {
+            name
+            owner {
+              login
+            }
+          }
+        }
+      }
+    }
+  }
+}

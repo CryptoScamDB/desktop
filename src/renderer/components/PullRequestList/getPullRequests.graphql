@@ -1,0 +1,26 @@
+query ($repo: String!) {
+  repository (owner: "CryptoScamDB", name: $repo) {
+    pullRequests(first: 10, states: [OPEN]) {
+      nodes {
+        id
+        number
+        title
+        author {
+          login
+        }
+        repository {
+          name
+        }
+        headRefOid
+        headRef {
+          repository {
+            owner {
+              login
+            }
+            name
+          }
+        }
+      }
+    }
+  }
+}
