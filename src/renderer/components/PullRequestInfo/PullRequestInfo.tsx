@@ -4,6 +4,8 @@ import { Link, RouteComponentProps } from '@reach/router';
 import * as getPullRequest from './getPullRequest.graphql';
 import * as getCommands from './getCommands.graphql';
 import ExternalLink from '../ExternalLink/ExternalLink';
+import Comments from './Comments/Comments';
+import AddCommentForm from './AddCommentForm/AddCommentForm';
 
 type Props = RouteComponentProps<{ repo: string; number: string }> & WithApolloClient<{}>;
 
@@ -20,10 +22,14 @@ interface PullRequestInfoQueryData {
 }
 
 interface PullRequest {
+  id: string;
   number: number;
   title: string;
   author: {
     login: string;
+  };
+  comments: {
+    nodes: CommentData[];
   };
   headRef: {
     target: {
@@ -35,6 +41,15 @@ interface PullRequest {
         };
       };
     };
+  };
+}
+
+export interface CommentData {
+  id: string;
+  bodyText: string;
+  createdAt: string;
+  author: {
+    login: string;
   };
 }
 
@@ -129,6 +144,9 @@ class PullRequestInfo extends React.PureComponent<Props, State> {
               <pre>{command.text}</pre>
             </div>
           ))}
+          <h3>Comments</h3>
+          <Comments comments={pullRequest.comments.nodes}/>
+          <AddCommentForm pullRequestId={pullRequest.id}/>
         </div>
       </>
     );

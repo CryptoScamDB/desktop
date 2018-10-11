@@ -1,10 +1,21 @@
 query ($repo: String!, $number: Int!) {
   repository (owner: "CryptoScamDB", name: $repo) {
     pullRequest(number: $number) {
+      id
       number
       title
       author {
         login
+      }
+      comments (last: 10) {
+        nodes {
+          id
+          bodyText
+          createdAt
+          author {
+            login
+          }
+        }
       }
       headRef {
         target {
